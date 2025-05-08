@@ -1,0 +1,27 @@
+try {
+    def label = "devops-${BUILD_NUMBER}"
+    podTemplate(label: label, cloud: 'kubernetes',
+        containers: [
+            containerTemplate(name: 'bash', image: "bash:latest", runAsUser: '0', runAsGroup: '0', ttyEnabled: true, command: 'cat')
+        ],
+        volumes: [
+            emptyDirVolume(mountPath: '/var/run')
+        ]) {
+        node(label) {
+            // Disable Concurrent Builds and Keep Build History to 20
+            properties([disableConcurrentBuilds(), buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '20'))])
+            skipDefaultCheckout()
+
+            stage('Clean & Checkout') {
+                container('bash') {
+                    sh "echo Hello"
+                }
+            }
+        }
+    }
+} catch (Exception e) {
+    // Error Exception Handling
+    print e.getMessage();
+    print e.getStackTrace();
+    currentBuild.result = "FAILURE"
+}
