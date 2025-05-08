@@ -1,0 +1,9 @@
+ingress:
+  enabled: true
+  selfSigned: true
+  ingressClassName: nginx
+  hostname: "localhost.local"
+  path: "/"
+  pathType: ImplementationSpecific
+service:
+  type: ClusterIP
