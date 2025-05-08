@@ -1,0 +1,16 @@
+controller:
+  ingress:
+    enabled: true
+    paths: []
+    apiVersion: "extensions/v1beta1"
+    labels: {}
+    annotations:
+      cert-manager.io/cluster-issuer: selfsigned-cluster-issuer
+    ingressClassName: nginx
+    path: /
+    hostName: jenkins.localhost.local
+    resourceRootUrl:
+    tls:
+    - secretName: jenkins.localhost.local
+      hosts:
+        - jenkins.localhost.local
